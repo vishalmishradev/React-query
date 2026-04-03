@@ -5,12 +5,15 @@ import axios from 'axios'
 
 const PostsRQ = () => {
 
- const {data, isLoading, isError, error} =  useQuery({
+ const {data, isLoading, isError, error, isFetching,refetch} =  useQuery({
     queryKey: ["posts"],
     queryFn: ()=>{
      return axios.get("http://localhost:4000/posts")
-    }
+    }, 
+    enabled:false,
   }) 
+  console.log({isLoading, isFetching});
+  
 
   if(isLoading){
         return <div>Page is Loading........</div>
@@ -23,6 +26,8 @@ const PostsRQ = () => {
     console.log(data);
   return (
         <div className="post-list">
+          <button onClick={refetch}>Fetch post
+            </button>
             {
                 data?.data.map(post =>(
                     <div className="post-item" key={post.id}>
@@ -31,6 +36,7 @@ const PostsRQ = () => {
                     </div>
                 ))
             }
+            
         </div>
     );
 }
